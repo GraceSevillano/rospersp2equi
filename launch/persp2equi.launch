@@ -1,0 +1,39 @@
+<launch>
+  <arg name="input_bagfile" />
+   <!--  <arg name="output_bagfile" />-->
+  <arg name="inputColorImagesTopic" default="/Azure/rgb/image_raw"/>
+  <arg name="inputDepthImagesTopic" default="/Azure/depth_to_rgb/image_raw"/> 
+  <arg name="outputColorImagesTopic" default="/camera/equirectangular/color/image_raw"/> 
+  <arg name="outputDepthImagesTopic" default="/camera/equirectangular/depth/image_raw"/>
+  <arg name="savePath" default="/root/Desktop/Kevin_Azure_outputNEW/Data/Map/Dense/Dataset_equi/" />
+
+  <param name="use_sim_time" value="true"/>
+
+  <node pkg="image_transport" type="republish" name="republish_rgb" output="screen"
+        args="compressed in:=$(arg inputColorImagesTopic) raw out:=/republish/color/image_raw">
+    <param name="image_transport" value="compressed"/>
+  </node>
+
+  <node pkg="image_transport" type="republish" name="republish_depth" required="true" output="screen"
+        args="raw in:=$(arg inputDepthImagesTopic) raw out:=/republish/depth/image_raw">
+  </node>
+
+  <node name="perps2" pkg="rospersp2equi" type="perps2" output="screen">
+    <param name="inputColorImagesTopic" type="string" value="/republish/color/image_raw"/>
+    <param name="outputColorImagesTopic" type="string" value="$(arg outputColorImagesTopic)"/>
+    <param name="inputDepthImagesTopic" type="string" value="/republish/depth/image_raw"/>
+    <param name="outputDepthImagesTopic" type="string" value="$(arg outputDepthImagesTopic)"/>
+    <param name="savePath" type="string" value="$(arg savePath)"/>
+    <param name="persWidth" type="int" value="1280"/>
+    <param name="persHeight" type="int" value="720"/>
+    <param name="equiWidth" type="int" value="1280"/>
+    <param name="equiHeight" type="int" value="720"/>    
+  </node>
+
+  <node pkg="rosbag" type="play" name="rosbag_data_play" args="--clock -r 0.05 $(arg input_bagfile)" />
+
+ <!-- <node pkg="rosbag" type="record" name="record_output" args="-O $(arg output_bagfile) $(arg outputColorImagesTopic) $(arg outputDepthImagesTopic)" />-->
+
+  <node pkg="rospersp2equi" type="monitor_rosbag.py" name="monitor_rosbag" output="screen"/>
+</launch>
+
