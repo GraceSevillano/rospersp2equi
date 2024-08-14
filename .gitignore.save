@@ -1,0 +1,7 @@
+data/
+inlude/
+src/persp2equi_2.cpp
+src/persp2equi.cpp
+equirectangular_image.png
+/mapped_image.dat
+

@@ -5,7 +5,7 @@
   <arg name="inputDepthImagesTopic" default="/Azure/depth_to_rgb/image_raw"/> 
   <arg name="outputColorImagesTopic" default="/camera/equirectangular/color/image_raw"/> 
   <arg name="outputDepthImagesTopic" default="/camera/equirectangular/depth/image_raw"/>
-  <arg name="savePath" default="/root/Desktop/Kevin_Azure_outputNEW/Data/Map/Dense/Dataset_equi/" />
+  <arg name="savePath" default="/root/Desktop/Kevin_Azure_outputNEW/Data/Map/Dense/Dataset_5k_z/" />
 
   <param name="use_sim_time" value="true"/>
 

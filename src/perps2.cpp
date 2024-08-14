@@ -15,7 +15,7 @@
 #include <queue>
 #include <thread>
 #include <mutex>
-#include <opencv2/opencv.hpp>  // Incluyo OpenCV para guardar imágenes
+#include <opencv2/opencv.hpp>  //solo para guardar
 #include <fstream>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -36,13 +36,13 @@ std::queue<std::pair<sensor_msgs::ImageConstPtr, sensor_msgs::ImageConstPtr>> fr
 std::mutex queueMutex;
 bool processing = true;
 
-// Valores de la cámara de perspectiva
+//perspective camera values
 double fx = 629.70495;
 double fy = 628.84787;
 double cx = 630.90746;
 double cy = 366.6015;
 
-// Ruta de guardado
+
 std::string basePath;
 
 void init()
@@ -56,7 +56,6 @@ void init()
 
     nbPixels = equiWidth * equiHeight;
 
-    // Crear directorios
     mkdir((basePath).c_str(), 0777);
     mkdir((basePath + "rgb").c_str(), 0777);
     mkdir((basePath + "depth").c_str(), 0777);
@@ -85,13 +84,17 @@ void convertToEquirectangular(const vpImage<T>& inputColor, const vpImage<float>
     #pragma omp parallel for
     for (int y = 0; y < persHeight; ++y) {
         for (int x = 0; x < persWidth; ++x) {
-            double depth = inputDepth[y][x];
+            double z = inputDepth[y][x]; //cambie la definicion depth a z
             Eigen::Vector3d point;
-            point << (x - cx) / fx * depth, 
-                     (y - cy) / fy * depth, 
-                     depth;
+            point << (x - cx) / fx * z, 
+                     (y - cy) / fy * z, 
+                     z;
 
             point = rotationMatrix * point + translationVector;
+            double distance = point.norm();  // sqrt(X^2 + Y^2 + Z^2)
+
+            assert(distance > 0 && "Distance should always be positive"); //una verificadita 
+
 
             double theta = atan2(point[2], point[0]) - (M_PI / 2.0);
             double phi = asin(point[1] / point.norm());
@@ -103,14 +106,15 @@ void convertToEquirectangular(const vpImage<T>& inputColor, const vpImage<float>
 
             if (u >= 0 && u < equiWidth && v >= 0 && v < equiHeight) {
                 outputColor[v][u] = inputColor[y][x];
-                outputDepth[v][u] = depth;
+                outputDepth[v][u] = distance; //depth;
             }
         }
     }
 }
 
 void processFrames()
-{
+{   
+    //save the timestamps in the TUM format
     int frameCounter = 0;
     std::ofstream rgbFile(basePath + "rgb.txt");
     std::ofstream depthFile(basePath + "depth.txt");
@@ -163,8 +167,6 @@ void processFrames()
 
             cv::Mat outColorImage(equiHeight, equiWidth, CV_8UC3);
             cv::Mat outDepthImage(equiHeight, equiWidth, CV_16UC1);
-            
-            float scale_factor = 5000.0;
 
             #pragma omp parallel for
             for (int i = 0; i < equiHeight; i++) {
@@ -172,7 +174,7 @@ void processFrames()
                     outColorImage.at<cv::Vec3b>(i, j)[0] = EquiColorImage[i][j].B;
                     outColorImage.at<cv::Vec3b>(i, j)[1] = EquiColorImage[i][j].G;
                     outColorImage.at<cv::Vec3b>(i, j)[2] = EquiColorImage[i][j].R;
-                    outDepthImage.at<uint16_t>(i, j) = static_cast<uint16_t>(EquiDepthImage[i][j] * scale_factor);
+                    outDepthImage.at<uint16_t>(i, j) = static_cast<uint16_t>(EquiDepthImage[i][j]*5000.0f);
                 }
             }
 
@@ -236,6 +238,8 @@ int main(int argc, char **argv)
     nHp.param("equiHeight", equiHeight, 720); 
 
     nbPixels = equiWidth * equiHeight;
+
+    // Set the rotation matrix and the translation vector
     //Dense
     rotationMatrix << 0.02452235260785531 , -0.999126137733474    , -0.03384703668859073,
                       0.9991684496848064  ,  0.025598472201519583 , -0.031735222505802504,
@@ -252,10 +256,10 @@ int main(int argc, char **argv)
 
     //SlowCircle
     //rotationMatrix << 0.01231197886305713, -0.9992541627671837, -0.03659971550196347,
-    //                  0.9988520629647276, 0.01398508084898507, -0.04581454808090266,
+    //                 0.9988520629647276, 0.01398508084898507, -0.04581454808090266,
     //                  0.046292235131550986, -0.03599363416198878, 0.9982792706025492;
                         
-    //translationVector << 0.011479783301971105, 0.01603237083853206, 0.021855775198222304;
+    //translationVector << 0.011479783301971105, 0.01603237083853206, 0.021855775198222304; 
 
     init();
 
@@ -264,7 +268,8 @@ int main(int argc, char **argv)
     image_transport::ImageTransport it(nH);
     message_filters::Subscriber<sensor_msgs::Image> sub_color_image(nH, inputColorImagesTopic, 1);
     message_filters::Subscriber<sensor_msgs::Image> sub_depth_image(nH, inputDepthImagesTopic, 1);
-    message_filters::TimeSynchronizer<sensor_msgs::Image, sensor_msgs::Image> sync(sub_color_image, sub_depth_image, 10);
+    typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::Image, sensor_msgs::Image> MySyncPolicy;
+    message_filters::Synchronizer<MySyncPolicy> sync(MySyncPolicy(10000), sub_color_image, sub_depth_image); 
     sync.registerCallback(boost::bind(&callback, _1, _2));
 
     pub_equirectangular_color_image = it.advertise(outputColorImagesTopic, 1);
