@@ -81,8 +81,8 @@ Below are examples of the images before and after the transformation:
 #### Perspective Color and Depth Images:
 
 <p align="center">
-  <img src="images/rgb.png" width="255"  alt="Rgb Azure image" />
-  <img src="images/depth.png" width="255" alt="Depth Azure image" />
+  <img src="images/rgb.png" width="400"  alt="Rgb Azure image" />
+  <img src="images/depth.png" width="400" alt="Depth Azure image" />
 </p>
 <p align="center">
   Rgb Azure image (left) and Depth Azure image (right)
