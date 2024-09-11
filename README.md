@@ -97,3 +97,8 @@ Below are examples of the images before and after the transformation:
 <p align="center">
   Rgb ERP Azure image (left) and Depth ERP Azure image (right)
 </p>
+
+## Author
+
+**Grace Sevillano**  
+[GitHub](https://github.com/GraceSevillano)
