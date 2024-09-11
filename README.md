@@ -84,6 +84,9 @@ Below are examples of the images before and after the transformation:
   <img src="images/rgb.png" width="255"  alt="Rgb Azure image" />
   <img src="images/depth.png" width="255" alt="Depth Azure image" />
 </p>
+<p align="center">
+  Rgb Azure image (left) and Depth Azure image (right)
+</p>
 
 #### ERP (Equi-Rectangular Projection) Color and Depth Images:
 
@@ -91,4 +94,6 @@ Below are examples of the images before and after the transformation:
   <img src="images/rgb_equi.png" width="255"  alt="Rgb ERP Azure image" />
   <img src="images/depth_equi.png" width="255" alt="Depth ERP Azure image" />
 </p>
-
+<p align="center">
+  Rgb ERP Azure image (left) and Depth ERP Azure image (right)
+</p>
