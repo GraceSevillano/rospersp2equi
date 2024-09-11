@@ -79,9 +79,17 @@ This will process the images and output them in equirectangular format (ERP) to 
 Below are examples of the images before and after the transformation:
 
 #### Perspective Color and Depth Images:
-*the perspective RGB and depth images here.*
+
+<p align="center">
+  <img src="images/rgb.png" alt="Rgb Azure image" width="45%" />
+  <img src="images/depth.png" alt="Depth Azure image" width="45%" />
+</p>
 
 #### ERP (Equi-Rectangular Projection) Color and Depth Images:
-*ERP-transformed RGB and depth images here.*
+
+<p align="center">
+  <img src="images/rgb_equi.png" alt="Rgb ERP Azure image" width="45%" />
+  <img src="images/depth_equi.png" alt="Depth ERP Azure image" width="45%" />
+</p>
 
 
