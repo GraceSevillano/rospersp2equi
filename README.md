@@ -1,6 +1,6 @@
 # rospersp2equi
 
-`rospersp2equi` is a ROS1 package designed to transform perspective images into equirectangular format (Equi-Rectangular Projection, ERP), supporting both color and depth images. This package has used the Azure Kinect camera, and its RGB and depth images have been transformed into the ERP format.
+`rospersp2equi` is a ROS1 package designed to transform perspective images into equirectangular format (Equi-Rectangular Projection, ERP), supporting both color and depth images. This package has used the Azure Kinect camera, and its RGB and depth images have been transformed into the ERP format. The final equirectangular projection is aligned with the reference system of the ThetaS camera.
 
 ## Installation
 
@@ -29,6 +29,18 @@ Before using this package, ensure you have the following dependencies installed:
 2. **Important**: Before building, make sure to:
     - Add the correct rotation matrix and translation vector inside the `perps2.cpp` source file.
     - Use your own perspective camera parameters (e.g., `fx`, `fy`, `cx`, `cy`, distortion coefficients) to match the setup of your camera. For example, this package used the Azure Kinect camera.
+
+    - Add the correct rotation matrix and translation vector inside the `perps2.cpp` source file to align the Azure Kinect camera with the ThetaS system. This transformation is crucial for ensuring that the output equirectangular images correspond to the ThetaS camera's coordinate system.
+
+  For example, the following transformation matrix is used:
+
+    ```bash
+        rotationMatrix << 0.01348508, -0.99950615, -0.02838054,  
+                          0.99985291,  0.01377857, -0.01017193,  
+                          0.01055796, -0.02823921,  0.99954551;
+
+        translationVector << 0.08626425, 0.14222383, 0.02128052;
+    ```
 
 3. Build the package:
     ```bash
@@ -88,6 +100,14 @@ Below are examples of the images before and after the transformation:
   Rgb Azure image (left) and Depth Azure image (right)
 </p>
 
+#### Equi-Rectangular Color Image - ThetaS Reference:
+<p align="center"> 
+  <img src="images/rgb_theta.jpg" width="400" alt="Rgb ERP ThetaS image" /> 
+</p> 
+<p align="center"> 
+RGB Equi-Rectangular ThetaS image used as the reference for the transformation from Azure Kinect to the ThetaS coordinate system. 
+</p>
+
 #### ERP (Equi-Rectangular Projection) Color and Depth Images:
 
 <p align="center">
@@ -96,6 +116,15 @@ Below are examples of the images before and after the transformation:
 </p>
 <p align="center">
   Rgb ERP Azure image (left) and Depth ERP Azure image (right)
+</p>
+
+#### Overlapping ERP Images - Azure Kinect to ThetaS Calibration:
+
+<p align="center"> 
+<img src="images/overlapping.png" width="400" alt="Overlapped RGB images" /> 
+</p> 
+<p align="center"> 
+Overlapping of the Azure Kinect and ThetaS RGB equirectangular images, showing the successful calibration between the two cameras. 
 </p>
 
 ## Author
