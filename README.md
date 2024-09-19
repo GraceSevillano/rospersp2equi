@@ -35,11 +35,11 @@ Before using this package, ensure you have the following dependencies installed:
   For example, the following transformation matrix is used:
 
     ```
-        rotationMatrix << 0.01348508, -0.99950615, -0.02838054,  
-                          0.99985291,  0.01377857, -0.01017193,  
-                          0.01055796, -0.02823921,  0.99954551;
+    rotationMatrix << 0.01348508, -0.99950615, -0.02838054,  
+                      0.99985291,  0.01377857, -0.01017193,  
+                      0.01055796, -0.02823921,  0.99954551;
 
-        translationVector << 0.08626425, 0.14222383, 0.02128052;
+    translationVector << 0.08626425, 0.14222383, 0.02128052;
     ```
 
 3. Build the package:
