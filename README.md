@@ -30,18 +30,6 @@ Before using this package, ensure you have the following dependencies installed:
     - Add the correct rotation matrix and translation vector inside the `perps2.cpp` source file.
     - Use your own perspective camera parameters (e.g., `fx`, `fy`, `cx`, `cy`, distortion coefficients) to match the setup of your camera. For example, this package used the Azure Kinect camera.
 
-    - Add the correct rotation matrix and translation vector inside the `perps2.cpp` source file to align the Azure Kinect camera with the ThetaS system. This transformation is crucial for ensuring that the output equirectangular images correspond to the ThetaS camera's coordinate system.
-
-  For example, the following transformation matrix is used:
-
-    ```bash
-        rotationMatrix << 0.01348508, -0.99950615, -0.02838054,  
-                          0.99985291,  0.01377857, -0.01017193,  
-                          0.01055796, -0.02823921,  0.99954551;
-
-        translationVector << 0.08626425, 0.14222383, 0.02128052;
-    ```
-
 3. Build the package:
     ```bash
     catkin_make
