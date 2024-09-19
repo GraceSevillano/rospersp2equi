@@ -133,26 +133,26 @@ void convertToEquirectangular(const vpImage<T>& inputColor, const vpImage<float>
 
                 //assert(distance > 0 && "Distance should always be positive"); //una verificadita 
 
-                double theta = atan2(point[2], point[0]) - (M_PI / 2.0);
+                double theta = atan2(point[0], point[2]) ;
                 double phi = asin(point[1] / point.norm());
 
                 int u = static_cast<int>((theta + M_PI) / (2.0 * M_PI) * equiWidth);
                 int v = static_cast<int>((phi + (M_PI / 2.0)) / M_PI * equiHeight);
                 
-                u = equiWidth - u;
+                u = std::min(std::max(u, 0), equiWidth - 1);
+                v = std::min(std::max(v, 0), equiHeight - 1);
             
+                //if (u >= 0 && u < equiWidth && v >= 0 && v < equiHeight) {
+                outputColor[v][u] = inputColor[correctedY_int][correctedX_int];
+                outputDepth[v][u] = distance; //depth;
 
-                if (u >= 0 && u < equiWidth && v >= 0 && v < equiHeight) {
-                    outputColor[v][u] = inputColor[correctedY_int][correctedX_int];
-                    outputDepth[v][u] = distance; //depth;
+                  //  double max_distance = 2.88; 
 
-                    double max_distance = 2.88; 
+                 //   int r = static_cast<int>(inputColor[y][x].R);
+                 //   int g = static_cast<int>(inputColor[y][x].G);
+                 //   int b = static_cast<int>(inputColor[y][x].B);
 
-                    int r = static_cast<int>(inputColor[y][x].R);
-                    int g = static_cast<int>(inputColor[y][x].G);
-                    int b = static_cast<int>(inputColor[y][x].B);
-
-                    int intensity = static_cast<int>(std::min(255.0, (distance / max_distance) * 255.0));
+                 //   int intensity = static_cast<int>(std::min(255.0, (distance / max_distance) * 255.0));
 
                     //#pragma omp critical
                     //{
@@ -161,7 +161,7 @@ void convertToEquirectangular(const vpImage<T>& inputColor, const vpImage<float>
                     //    << intensity << " " << r << " " << g << " " << b << std::endl;
                     //    points.push_back(ss.str());
                     //}
-                 }
+                // }
             }
         }
     }
