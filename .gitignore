@@ -1,7 +1,8 @@
 data/
 include/
-images/
 build/
 src/persp2equi_2.cpp
-src/persp2equi.cpp
+launch/persp2equi.launch
+src/persp2.cpp
+
 
