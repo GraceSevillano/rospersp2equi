@@ -1,10 +1,7 @@
 data/
 include/
+images/
+build/
 src/persp2equi_2.cpp
 src/persp2equi.cpp
-world_coords.dat
-equirectangular_image.png
-mapped_image.dat
-sphere_coords.dat
-spherical_coords.dat
-world_coords.dat
+
