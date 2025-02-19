@@ -15,7 +15,7 @@
 #include <queue>
 #include <thread>
 #include <mutex>
-#include <opencv2/opencv.hpp>  //solo para guardar
+#include <opencv2/opencv.hpp>  
 #include <fstream>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -50,6 +50,19 @@ double k2 = -0.035798;
 double p1 = -0.001272;
 double p2 = -0.002114;
 double k3 = 0.00000;
+
+// cámara wide-angle depth values
+//double fx = 257.358; 
+//double fy = 257.026; 
+//double cx = 257.527; 
+//double cy = 262.628; 
+
+//double k1 = -0.351437; 
+//double k2 = 0.183288; 
+//double p1 = -0.00229322; 
+//double p2 = 0.00252389; 
+//double k3 = -0.0666614;
+
 
 cv::Mat cameraMatrix = (cv::Mat_<double>(3, 3) << fx, 0, cx, 0, fy, cy, 0, 0, 1);
 cv::Mat distCoeffs = (cv::Mat_<double>(5, 1) << k1, k2, p1, p2, k3);
