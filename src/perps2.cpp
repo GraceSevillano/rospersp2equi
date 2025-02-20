@@ -329,13 +329,18 @@ int main(int argc, char **argv)
 
     // Set the rotation matrix and the translation vector
 
-    //equiMpc2 x M_dense (1 scale): 13NEW      ###############################              el mejorcito de DENSE 
+    // narrow camera kinect
     rotationMatrix << 0.01348508, -0.99950615, -0.02838054,  
                       0.99985291,  0.01377857, -0.01017193,  
                       0.01055796, -0.02823921,  0.99954551; 
         
     translationVector << 0.08626425, 0.14222383,0.02128052;
-
+    
+    //wide camera kinect
+    //rotationMatrix << 0.01317515, -0.99063778, -0.13588022, 
+    //                 0.99990909,  0.01344365, -0.00105867,  
+    //                 0.0028755,  -0.13585375,  0.99072529;  
+    //translationVector <<0.07562525, 0.1101918,0.04680101;
 
     init();
 
