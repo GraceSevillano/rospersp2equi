@@ -2,7 +2,8 @@
   <arg name="input_bagfile" />
    <!--  <arg name="output_bagfile" />-->
   <arg name="inputColorImagesTopic" default="/Azure/rgb/image_raw"/>
-  <arg name="inputDepthImagesTopic" default="/Azure/depth_to_rgb/image_raw"/> 
+  <arg name="inputDepthImagesTopic" default="/Azure/depth_to_rgb/image_raw"/> <!--narrow camera--> 
+  <!--<arg name="inputDepthImagesTopic" default="/Azure/depth/image_raw"/> wide camera --> 
   <arg name="outputColorImagesTopic" default="/camera/equirectangular/color/image_raw"/> 
   <arg name="outputDepthImagesTopic" default="/camera/equirectangular/depth/image_raw"/>
   <arg name="savePath" default="/root/Desktop/Kevin_Azure_outputNEW/Data/Map/Dense/Dataset_5k_z/" />
@@ -24,8 +25,8 @@
     <param name="inputDepthImagesTopic" type="string" value="/republish/depth/image_raw"/>
     <param name="outputDepthImagesTopic" type="string" value="$(arg outputDepthImagesTopic)"/>
     <param name="savePath" type="string" value="$(arg savePath)"/>
-    <param name="persWidth" type="int" value="1280"/>
-    <param name="persHeight" type="int" value="720"/>
+    <param name="persWidth" type="int" value="1280"/>  <!-- 512  wide camera resolution --> 
+    <param name="persHeight" type="int" value="720"/>  <!-- 512  wide camera resolution --> 
     <param name="equiWidth" type="int" value="1280"/>
     <param name="equiHeight" type="int" value="720"/>    
   </node>
